@@ -1,0 +1,30 @@
+{
+  "name": "URL Shortner Microservice",
+  "version": "1.0.0",
+  "description": "URL Shortner Microservice",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "homepage": "",
+  "bugs": "",
+  "keywords": [
+    "MEAN",
+    "MongoDB",
+    "Express",
+    "Angular",
+    "Node",
+    "javascript",
+    "template"
+  ],
+  "author": "J. Steve Martinez",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.13.3",
+    "mongodb": "^2.0.42"
+  }
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+   <head>
+     <meta charset="utf-8">
+     <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame
+     Remove this if you use the .htaccess -->
+     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+     <meta name="description" content="URL Shortner Microservice">
+     <meta name="author" content="J. Steve Martinez">
+     <meta name="viewport" content="width=device-width; initial-scale=1.0">
+     <!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+     <link rel="shortcut icon" href="/public/img/jsm-icon.png">
+     <link rel="apple-touch-icon" href="/public/img/jsm-icon.png">
+     <title>URL Shortner Microservice</title>
+      <link href="/public/css/main.css" rel="stylesheet" type="text/css">
+   </head>
+   <body>
+     <div id="content">
+       <h1>freeCodeCamp</h1>
+       <h2>API Basejump: URL Shortner Microservice</h2>
+       <div id='stories'>
+         <h3>User stories:</h3>
+         <ol>
+           <li>I can pass a URL as a parameter and I will receive a shortened URL in the JSON response.</li>
+           <li>If I pass an invalid URL that doesn't follow the valid http://www.example.com format, the JSON response will contain an error instead.</li>
+           <li>When I visit that shortened URL, it will redirect me to my original link.</li>
+         </ol>
+       </div>
+       <div id="example">
+         <div >
+           <h4><a id="natural" href="http://127.0.0.1:3000/info">https://127.0.0.1:3000/info</a></h4>
+         </div>
+       </div>
+     </div>
+     <div class="container2">
+        <p>You have clicked the button <span id="click-nbr"></span> times.</p>
+        <br />
+        <div class="btn-container">
+           <button type="submit" class="btn btn-add">CLICK ME!</button>
+           <button class="btn btn-delete">RESET</button>
+        </div>
+     </div>
+      <div class="container">
+         <img src="/public/img/clementine_150.png" />
+         <br />
+         <p class="clementine-text">Powered by Clementine.js</p>
+      </div>
+
+      <script type="text/javascript" src="/controllers/clickController.client.js"></script>
+   </body>
+
+</html>
