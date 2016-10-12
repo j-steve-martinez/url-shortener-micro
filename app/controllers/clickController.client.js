@@ -3,11 +3,11 @@
 (function () {
 
    var addButton = document.querySelector('.btn-add');
-   var deleteButton = document.querySelector('.btn-delete');
-   var clickNbr = document.querySelector('#click-nbr');
+  //  var deleteButton = document.querySelector('.btn-delete');
+  //  var clickNbr = document.querySelector('#click-nbr');
 
    var base = document.URL;
-   var nLoc = base + 'test';
+   var nLoc = base + 't/http://google.com';
    var natural = document.getElementById('natural');
    natural.innerHTML = nLoc;
    natural.href = nLoc;
@@ -41,7 +41,7 @@
 
    function updateClickCount (data) {
       var clicksObject = JSON.parse(data);
-      clickNbr.innerHTML = clicksObject.clicks;
+      // clickNbr.innerHTML = clicksObject.clicks;
    }
 
    ready(ajaxRequest('GET', apiUrl, updateClickCount));
@@ -54,12 +54,12 @@
 
    }, false);
 
-   deleteButton.addEventListener('click', function () {
-
-      ajaxRequest('DELETE', apiUrl, function () {
-         ajaxRequest('GET', apiUrl, updateClickCount);
-      });
-
-   }, false);
+  //  deleteButton.addEventListener('click', function () {
+   //
+  //     ajaxRequest('DELETE', apiUrl, function () {
+  //        ajaxRequest('GET', apiUrl, updateClickCount);
+  //     });
+   //
+  //  }, false);
 
 })();
