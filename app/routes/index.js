@@ -9,72 +9,60 @@ module.exports = function (app, db) {
 
    app.route('/')
       .get(function (req, res) {
+         console.log('getting index.html');
          res.sendFile(process.cwd() + '/public/index.html');
       });
 
   app.route('/t/*')
      .get(function (req, res) {
+       console.log('getting shorty...');
+       var proto = '';
+       var start = req.url.indexOf('/', 1);
+       var url = req.url.slice(start + 1);
 
        // create default return object
-       var retObj = {'error': 'The url is not valid!'};
-       // find the last _id and increment by 1
+       var retObj = {};
+       var dbObj = {'urlid' : "", 'url' : ''};
 
-      // var isShorty = false;
-      // console.log('checking for shorty collection: ');
-      db.collections(function(err, col){
-        col.forEach(function(item, index, arr){
-          // console.log(item.s.name);
-          if (item.s.name === 'shorty') {
-            // isShort = true;
-            console.log('shorty found.');
-            console.log('finding id... ');
-            // shorty.drop();
-
-            shorty.count({ urlid: { $gt : 0 }}, function(err, count){
-              if (err) {
-                console.log('FIND ERROR');
-                throw err;
-              }
-              var newId = count + 1;
-              // console.log('last id: ' +  data._id);
-              console.log(' new id: ' +  newId);
-              // create a db object
-              var dbObj = {'urlid' : newId, 'url' : ''}
-             //  var isUrl = false;
-              // parse the url
-              var start = req.url.indexOf('/', 1);
-             //  console.log(start);
-              var url = req.url.slice(start + 1);
-             //  console.log(url);
-              // test the protocol
-             //  var protocol = url[1];
-              var regex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
-              if (url.match(regex)) {
-                // console.log(req.headers.referer);
-                dbObj.url = url;
-                var tinyUrl = req.headers.referer + newId;
-                // console.log(tinyUrl);
-                retObj = {'original_url': url, 'tiny_url': tinyUrl};
-                // add url to database and get id
-
-                shorty.insert(dbObj, function(err, doc){
-                  if (err) {
-                    console.log('INSERT ERROR');
-                    throw err
-                  } else {
-                    console.log('DBOBJ');
-                    console.log(JSON.stringify(dbObj));
-                  }
-                  db.close();
-                });
-              }
-              res.send(retObj);
-            });
-          }
-        });
-      });
+       // find the collection count and increment by 1
+       var shorty = db.collection('shorty');
+       shorty.count({ urlid: { $gt : 0 }}, function(err, count){
+         if (err) {
+           throw err;
+         }
+         count++;
+         console.log('new count: ');
+         console.log(count);
+         // validate url or show error
+         var regex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
+         if (url.match(regex)) {
+           // good url
+           console.log('start url: ');
+           console.log(req.headers.host);
+           console.log('destination url: ' + url);
+           retObj.url = url;
+           console.log('isSecure');
+           console.log(req.secure);
+           req.secure ? proto = 'https://' : proto = 'http://';
+           retObj.tiny = proto + req.headers.host + '/' + count;
+           // insert the data into the db;
+           dbObj.urlid = count;
+           dbObj.url = url;
+           shorty.insert(dbObj, function(err, data){
+             if (err) {
+               throw err;
+             }
+             console.log('inserted data: ');
+             console.log(data);
+           });
+         } else {
+           // bad url
+           retObj.error = 'The url is not valid!';
+         }
+         // send the response
+         res.send(retObj);
+       });
      });
-
 
    app.route('/api/clicks')
       .get(clickHandler.getClicks)
