@@ -7,7 +7,7 @@
   //  var clickNbr = document.querySelector('#click-nbr');
 
    var base = document.URL;
-   var nLoc = base + 't/http://google.com';
+   var nLoc = base + 't/http://www.bing.com';
    var natural = document.getElementById('natural');
    natural.innerHTML = nLoc;
    natural.href = nLoc;

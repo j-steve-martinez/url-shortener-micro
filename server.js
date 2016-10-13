@@ -19,42 +19,42 @@ if (port === undefined) {
 
 if (url !== undefined) {
   mongo.connect(url, function (err, db) {
-   if (err) {
-      throw new Error('Database failed to connect!');
-   } else {
-      // console.log('connected to db: ' + url);
-      console.log('connected to db...');
-   }
-
-   // ******************* SEEDING ********************************
-    // Check for collection and add a record if none exists
-    var clickProjection = { 'urlid': "", url: "" };
-    var dbObj = {'urlid' : 1, 'url' : 'http://www.mlb.com'};
-    var shorty = db.collection('shorty');
-    if (shorty) {
-      console.log('shorty found');
-      shorty.findOne({'urlid': 1}, clickProjection, function(err, result){
-        if (err) {
-          throw err;
-        }
-        if (result) {
-          console.log('Default record found: ');
-          console.log(result);
-        } else {
-          console.log('no data in shorty...');
-          console.log('adding default record...');
-          // add dummy record
-          shorty.insert(dbObj, function(err, data){
-            if (err) {
-              throw err;
-            }
-            console.log('inserted data: ');
-            console.log(data);
-          });
-        }
-      });
-    }
-    // ******************* END SEED ********************************
+     if (err) {
+        throw new Error('Database failed to connect!');
+     } else {
+        // console.log('connected to db: ' + url);
+        console.log('connected to db...');
+        // ******************* SEEDING ********************************
+         // Check for collection and add a record if none exists
+         var clickProjection = { 'urlid': "", url: "" };
+         var dbObj = {'urlid' : 1, 'url' : 'http://www.mlb.com'};
+         var shorty = db.collection('shorty');
+         // shorty.drop()
+         if (shorty) {
+           console.log('shorty found');
+           shorty.findOne({'urlid': 1}, clickProjection, function(err, result){
+             if (err) {
+               throw err;
+             }
+             if (result) {
+               console.log('Default record found: ');
+               console.log(result);
+             } else {
+               console.log('no data in shorty...');
+               console.log('adding default record...');
+               // add dummy record
+               shorty.insert(dbObj, function(err, data){
+                 if (err) {
+                   throw err;
+                 }
+                 console.log('inserted data: ');
+                 console.log(data);
+               });
+             }
+           });
+         }
+         // ******************* END SEED ********************************
+     }
 
      app.use('/public', express.static(process.cwd() + '/public'));
      app.use('/controllers', express.static(process.cwd() + '/app/controllers'));
@@ -68,12 +68,18 @@ if (url !== undefined) {
                   console.log('FIND ERROR');
                   throw err;
                 }
-                console.log('FINDING: ' + id);
-                console.log(docs);
-                var shortURL = docs[0].url;
-                console.log('id url: ' + shortURL);
-                res.redirect(shortURL);
-                res.end();
+                console.log('checking docs length');
+                console.log(docs.length);
+                if (docs.length <= 0) {
+                  res.send('error: id ' + id + ' not found')
+                } else {
+                  console.log('FINDING: ' + id);
+                  console.log(docs);
+                  var shortURL = docs[0].url;
+                  console.log('id url: ' + shortURL);
+                  res.redirect(shortURL);
+                }
+                // res.end();
               });
             // db.close();
      });
